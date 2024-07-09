@@ -2,4 +2,16 @@
     <string name="app_name">My Application</string>
     <string name="retrieving_data">Retrieving Data</string>
     <string name="user_profile">user profile</string>
+    <string name="home"><u>Home</u></string>
+    <string name="bank"><u>Bank</u></string>
+    <string name="company"><u>Company</u></string>
+    <string name="account_details"><u>Account Details</u></string>
+    <string name="userimage">userimage</string>
+    <string name="gender">gender</string>
+    <string name="calender">calender</string>
+    <string name="height">height</string>
+    <string name="weight">weight</string>
+    <string name="bloodtype">bloodtype</string>
+    <string name="hair">hair</string>
+    <string name="eye">eye</string>
 </resources>

@@ -12,13 +12,14 @@ import retrofit2.Response
 class MainActivityViewModel : ViewModel()
 {
 
-    fun retrieveUserList(limitValue:Int,skipValue:Int,onResponseObtained: OnResponseObtained)
+    fun retrieveUserList(limitValue: Int, skipValue: Int, onResponseObtained: OnResponseObtained)
     {
         ApiManager().createManagerInstance().getUserList(limitValue, skipValue).enqueue(object : Callback<UserResponseData>
         {
             override fun onResponse(p0: Call<UserResponseData>, p1: Response<UserResponseData>)
             {
-
+                if (skipValue > 10) onResponseObtained.onResponse(false, "no user data")
+                else
                 if (p1.isSuccessful)
                 {
                     p1.body()?.let { userResponseData ->
@@ -40,7 +41,8 @@ class MainActivityViewModel : ViewModel()
 
         })
     }
-    fun retrieveUserDetailsById(userId:Int,onResponseObtained: OnResponseObtained): Unit
+
+    fun retrieveUserDetailsById(userId: Int, onResponseObtained: OnResponseObtained)
     {
         ApiManager().createManagerInstance().getUserDetailsByID(userId).enqueue(object : Callback<User>
         {

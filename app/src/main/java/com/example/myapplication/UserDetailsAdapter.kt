@@ -75,7 +75,7 @@ class UserDetailsAdapter(private var userDetailsList: List<User?>?, private var 
             userDetails[position]?.let {
                 val item = it
                 val name =
-                    item.id.toString() + " " + item.firstName + " " + (if (item.maidenName.isNotEmpty()) (item.maidenName.first() + " ") else "") + item.lastName
+                    item.firstName + " " + (if (item.maidenName.isNotEmpty()) (item.maidenName.first() + " ") else "") + item.lastName
                 viewHolder.userNameTextView.text = name
                 viewHolder.emailTextView.text = item.email
                 val defaultIcon = if (item.gender == "female") R.drawable.female_default_icon else R.drawable.male_default_icon

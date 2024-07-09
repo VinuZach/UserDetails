@@ -1,13 +1,11 @@
 package com.example.myapplication
 
 import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -44,14 +42,15 @@ class UserDetailsActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_user_details)
         init()
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        // retrieveUserDetailsById(intent.extras!!.getInt("UserId", 1))
-        retrieveUserDetailsById(1)
+         retrieveUserDetailsById(intent.extras!!.getInt("UserId", 1))
+
     }
 
-    fun init(): Unit
+    fun init()
     {
         progressBar = findViewById(R.id.progressBar)
         userDetailsParentScrollView = findViewById(R.id.userdetails)
@@ -196,8 +195,8 @@ class UserDetailsActivity : AppCompatActivity()
                     }
 
                     val defaultIcon = if (userDetails.gender == "female") R.drawable.female_default_icon else R.drawable.male_default_icon
-                    Glide.with(this@UserDetailsActivity).load(userDetails.image).placeholder(defaultIcon).into(userImageView);
-                    Glide.with(this@UserDetailsActivity).load(genderIconImage).into(genderImageView);
+                    Glide.with(this@UserDetailsActivity).load(userDetails.image).placeholder(defaultIcon).into(userImageView)
+                    Glide.with(this@UserDetailsActivity).load(genderIconImage).into(genderImageView)
 
                 }
             }

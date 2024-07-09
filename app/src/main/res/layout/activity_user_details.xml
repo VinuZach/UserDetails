@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+
+
     tools:context=".UserDetailsActivity">
 
     <ProgressBar
@@ -30,7 +32,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/userimage"
@@ -38,6 +40,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_margin="20dp"
+                    android:contentDescription="@string/userimage"
                     android:src="@drawable/female_default_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -49,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Emily j Smith"
+
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -63,6 +66,7 @@
                     android:id="@+id/gender"
                     android:layout_width="20dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/gender"
                     android:layout_marginStart="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/name"
                     app:layout_constraintStart_toEndOf="@+id/name"
@@ -73,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="emily.johnson@x.dummyjson.com"
+
                     app:layout_constraintStart_toStartOf="@+id/name"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -83,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:text="+81 965-431-3024"
+
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -93,6 +97,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
+                    android:contentDescription="@string/calender"
                     android:src="@drawable/calender_icon"
                     app:layout_constraintStart_toStartOf="@+id/userimage"
                     app:layout_constraintTop_toBottomOf="@+id/userimage" />
@@ -102,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
-                    android:text="birthday"
+
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="@+id/imageView2" />
@@ -129,7 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
 
-                            app:cardBackgroundColor="@color/light_grey"
+                            app:cardBackgroundColor="@color/purple"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -147,17 +152,18 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="10dp"
                                     android:maxLines="1"
-                                    android:text="height"
+
                                     android:textColor="@color/black"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                                    app:layout_constraintTop_toBottomOf="@+id/heightimage" />
 
                                 <ImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/heightimage"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
+                                    android:contentDescription="@string/height"
                                     android:src="@drawable/height_icon"
                                     app:layout_constraintEnd_toEndOf="@+id/height"
                                     app:layout_constraintStart_toStartOf="@+id/height"
@@ -171,7 +177,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
 
-                            app:cardBackgroundColor="@color/light_grey"
+                            app:cardBackgroundColor="@color/purple"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -189,17 +195,18 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:maxLines="1"
-                                    android:text="weight"
+
                                     android:textColor="@color/black"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                                    app:layout_constraintTop_toBottomOf="@+id/weightimage" />
 
                                 <ImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/weightimage"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
+                                    android:contentDescription="@string/weight"
                                     android:src="@drawable/weight_icon"
                                     app:layout_constraintEnd_toEndOf="@+id/weight"
                                     app:layout_constraintStart_toStartOf="@+id/weight"
@@ -213,7 +220,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
 
-                            app:cardBackgroundColor="@color/light_grey"
+                            app:cardBackgroundColor="@color/purple"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -231,17 +238,18 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:maxLines="1"
-                                    android:text="bloodtype"
+
                                     android:textColor="@color/black"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                                    app:layout_constraintTop_toBottomOf="@+id/bloodimage" />
 
                                 <ImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/bloodimage"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
+                                    android:contentDescription="@string/bloodtype"
                                     android:src="@drawable/blood_type_icon"
                                     app:layout_constraintEnd_toEndOf="@+id/bloodtype"
                                     app:layout_constraintStart_toStartOf="@+id/bloodtype"
@@ -265,7 +273,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            app:cardBackgroundColor="@color/light_grey"
+                            app:cardBackgroundColor="@color/purple"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -281,16 +289,16 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginStart="5dp"
                                     android:maxLines="1"
-                                    android:text="height"
                                     android:textColor="@color/black"
-                                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                                    app:layout_constraintBottom_toBottomOf="@+id/hairimage"
+                                    app:layout_constraintStart_toEndOf="@+id/hairimage"
+                                    app:layout_constraintTop_toTopOf="@+id/hairimage" />
 
                                 <ImageView
-                                    android:id="@+id/imageView3"
+                                    android:id="@+id/hairimage"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
+                                    android:contentDescription="@string/hair"
                                     android:src="@drawable/hair_icon"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -303,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            app:cardBackgroundColor="@color/light_grey"
+                            app:cardBackgroundColor="@color/purple"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -319,7 +327,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginStart="5dp"
                                     android:maxLines="1"
-                                    android:text="height"
+
                                     android:textColor="@color/black"
                                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                                     app:layout_constraintStart_toEndOf="@+id/imageView3"
@@ -330,6 +338,7 @@
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:src="@drawable/eye_icon"
+                                    android:contentDescription="@string/eye"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -354,14 +363,14 @@
                         android:layout_height="wrap_content"
                         android:padding="20dp"
 
-                        android:text="Home" />
+                        android:text="@string/home" />
 
                     <TextView
                         android:id="@+id/bank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:text="Bank"
+                        android:text="@string/bank"
 
                         />
 
@@ -370,7 +379,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:text="Company" />
+                        android:text="@string/company" />
                 </LinearLayout>
 
                 <TextView
@@ -393,7 +402,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            app:cardBackgroundColor="@color/design_default_color_on_primary"
+            app:cardBackgroundColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -402,28 +411,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="40dp">
+              android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Account Details"
+                    android:textColor="@color/white"
+                    android:text="@string/account_details"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/account_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:textColor="@color/white"
                     android:layout_marginTop="5dp" />
 
                 <TextView
                     android:id="@+id/account_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:layout_marginTop="5dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

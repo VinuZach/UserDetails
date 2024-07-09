@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity()
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         messageTextView.visibility = View.VISIBLE
-        messageTextView.text= getString(R.string.retrieving_data)
+        messageTextView.text = getString(R.string.retrieving_data)
 
 
         retrieveUserData(true)
@@ -46,24 +46,33 @@ class MainActivity : AppCompatActivity()
 
     private fun retrieveUserData(isFirstTime: Boolean)
     {
-        if (!isFirstTime)
-        {
-            userDetailsList.add(null)
-            userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
-
-
-            val scrollPosition = userDetailsList.size - 1
-            userDetailsListAdapter?.notifyItemRemoved(scrollPosition)
-
-
-        }
+//        if (!isFirstTime)
+//        {
+//            Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
+//            if (!userDetailsList.contains(null))
+//            {
+//                try
+//                {
+//                    //userDetailsList.add(null)
+////                    userRecyclerView.recycledViewPool.clear()
+////                    Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
+////                    userDetailsListAdapter?.notifyDataSetChanged()
+//                } catch (e: Exception)
+//                {
+//                    e.printStackTrace()
+//                }
+//
+//
+//
+//            }
+//        }
         Log.e("asdsadsd", "retreiveUserData: ")
         mainActivityViewModel.retrieveUserList(limitValue, skipValue, onResponseObtained = object : OnResponseObtained
         {
             override fun onResponse(isSuccess: Boolean, responseData: Any?)
             {
                 messageTextView.visibility = View.GONE
-                if (!isFirstTime) userDetailsList.removeAt(userDetailsList.size - 1)
+                if (userDetailsList.contains(null)) userDetailsList.remove(null)
                 isLoading = false
                 if (isSuccess)
                 {
@@ -71,18 +80,27 @@ class MainActivity : AppCompatActivity()
                     val userResponseData = responseData as UserResponseData
                     skipValue += limitValue
                     userResponseData.users?.let {
-                        userDetailsList.addAll(it)
+                        try
+                        {
 
-                        Log.e("asdsadsd", "${userDetailsList.size}: ")
-                        userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
-                        if (skipValue == (limitValue * 2)) userRecyclerView.scrollToPosition(skipValue)
-                        isLoading = false
+                            userDetailsList.addAll(it)
+
+                            Log.e("asdsadsd", "${userDetailsList.size}: ")
+                            userRecyclerView.recycledViewPool.clear()
+                            userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
+                            if (skipValue == (limitValue * 2)) userRecyclerView.scrollToPosition(skipValue)
+                            isLoading = false
+                        } catch (e: Exception)
+                        {
+                            e.printStackTrace()
+                        }
 
                     }
 
                 }
                 else
                 {
+
                     messageTextView.visibility = View.VISIBLE
                     messageTextView.text = (responseData as String)
                 }
@@ -123,18 +141,24 @@ class MainActivity : AppCompatActivity()
             {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                Log.d("asdsadsd", "onScrolled: $isLoading   ...${linearLayoutManager?.findLastCompletelyVisibleItemPosition()}")
-                Log.d("asdsadsd", "onScrolled: ${userDetailsList.size}")
-                if (!isLoading)
+                try
                 {
-
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == userDetailsList.size - 1)
+                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                    Log.d("asdsadsd", "onScrolled: $isLoading   ...${linearLayoutManager?.findLastCompletelyVisibleItemPosition()}")
+                    Log.d("asdsadsd", "onScrolled: ${userDetailsList.size}")
+                    if (!isLoading)
                     {
 
-                        retrieveUserData(false)
-                        isLoading = true
+                        if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == userDetailsList.size - 1)
+                        {
+
+                            retrieveUserData(false)
+                            isLoading = true
+                        }
                     }
+                } catch (e: Exception)
+                {
+                    e.printStackTrace()
                 }
             }
         })
