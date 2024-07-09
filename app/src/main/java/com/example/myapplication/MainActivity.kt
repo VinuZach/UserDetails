@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,17 +11,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.myapplication.apiManager.model.User
 import com.example.myapplication.apiManager.model.UserResponseData
 
-val DUMMY_USER = User(id = 0, maidenName = "")
+val DUMMY_USER = null
 
 class MainActivity : AppCompatActivity()
 {
     lateinit var messageTextView: TextView
     lateinit var userRecyclerView: RecyclerView
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     var limitValue = 10
     var skipValue = 0
     private lateinit var mainActivityViewModel: MainActivityViewModel
-
 
     var userDetailsList: MutableList<User?> = mutableListOf()
 
@@ -51,14 +49,13 @@ class MainActivity : AppCompatActivity()
     {
         if (!isFirstTime)
         {
-            Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(DUMMY_USER)}")
+
             if (!userDetailsList.contains(DUMMY_USER))
             {
                 try
                 {
                     userDetailsList.add(DUMMY_USER)
                     userRecyclerView.recycledViewPool.clear()
-                    Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
                     userDetailsListAdapter?.notifyDataSetChanged()
                 } catch (e: Exception)
                 {
@@ -68,7 +65,6 @@ class MainActivity : AppCompatActivity()
 
             }
         }
-        Log.e("asdsadsd", "retreiveUserData: ")
         mainActivityViewModel.retrieveUserList(limitValue, skipValue, onResponseObtained = object : OnResponseObtained
         {
             override fun onResponse(isSuccess: Boolean, responseData: Any?)
@@ -86,8 +82,6 @@ class MainActivity : AppCompatActivity()
                         {
                             if (userDetailsList.contains(DUMMY_USER)) userDetailsList.remove(DUMMY_USER)
                             userDetailsList.addAll(it)
-
-                            Log.e("asdsadsd", "${userDetailsList.size}: ")
                             userRecyclerView.recycledViewPool.clear()
                             userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
                             if (skipValue == (limitValue * 2)) userRecyclerView.scrollToPosition(skipValue)
@@ -121,13 +115,15 @@ class MainActivity : AppCompatActivity()
 
     var isLoading = false
 
-
+    /**
+     * initialise variables
+     */
     fun init()
     {
         messageTextView = findViewById(R.id.message)
         userRecyclerView = findViewById(R.id.recyclerview)
 
-        Log.d("asdsadsad", "onDataBind: $isLoading")
+
         swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
 
@@ -142,13 +138,18 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    /**
+     * adapter
+     */
     private fun initAdapter()
     {
         userDetailsListAdapter = UserDetailsAdapter(userDetailsList, this)
         userRecyclerView.setAdapter(userDetailsListAdapter)
     }
 
-
+    /**
+     * listen for end scroll and call for more data
+     */
     private fun initScrollListener()
     {
         userRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener()
@@ -165,8 +166,6 @@ class MainActivity : AppCompatActivity()
                 try
                 {
                     val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    Log.d("asdsadsd", "onScrolled: $isLoading   ...${linearLayoutManager?.findLastCompletelyVisibleItemPosition()}")
-                    Log.d("asdsadsd", "onScrolled: ${userDetailsList.size}")
                     if (!isLoading)
                     {
 

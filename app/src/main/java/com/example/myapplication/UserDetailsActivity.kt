@@ -2,7 +2,6 @@ package com.example.myapplication
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -48,7 +47,7 @@ class UserDetailsActivity : AppCompatActivity()
         setContentView(R.layout.activity_user_details)
         init()
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-         retrieveUserDetailsById(intent.extras!!.getInt("UserId", 1))
+        retrieveUserDetailsById(intent.extras!!.getInt("UserId", 1))
 
     }
 
@@ -95,7 +94,7 @@ class UserDetailsActivity : AppCompatActivity()
             {
                 progressBar.visibility = View.GONE
 
-                Log.d("asdasdsad", "onResponse: $responseData")
+
                 if (isSuccess)
                 {
                     userDetailsParentScrollView.visibility = View.VISIBLE
@@ -216,7 +215,6 @@ class UserDetailsActivity : AppCompatActivity()
                 {
                     userDetailsParentScrollView.visibility = View.GONE
                     messageTextView.visibility = View.VISIBLE
-
                     messageTextView.setText((responseData as String))
                 }
             }

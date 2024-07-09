@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.apiManager.ApiManager
 import com.example.myapplication.apiManager.model.User
@@ -12,6 +12,9 @@ import retrofit2.Response
 class MainActivityViewModel : ViewModel()
 {
 
+    /**
+     * retrieves list of users
+     */
     fun retrieveUserList(limitValue: Int, skipValue: Int, onResponseObtained: OnResponseObtained)
     {
         ApiManager().createManagerInstance().getUserList(limitValue, skipValue).enqueue(object : Callback<UserResponseData>
@@ -33,14 +36,15 @@ class MainActivityViewModel : ViewModel()
 
             override fun onFailure(p0: Call<UserResponseData>, p1: Throwable)
             {
-                Log.d("12212121", "onFailure: $p1")
-
                 onResponseObtained.onResponse(false, "no response from server")
             }
 
         })
     }
 
+    /**
+     * retrieves details of specific user of given id
+     */
     fun retrieveUserDetailsById(userId: Int, onResponseObtained: OnResponseObtained)
     {
         ApiManager().createManagerInstance().getUserDetailsByID(userId).enqueue(object : Callback<User>
