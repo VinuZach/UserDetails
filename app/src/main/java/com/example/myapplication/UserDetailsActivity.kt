@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.myapplication.apiManager.model.User
 
@@ -18,6 +19,7 @@ class UserDetailsActivity : AppCompatActivity()
     lateinit var mainActivityViewModel: MainActivityViewModel
     lateinit var progressBar: ProgressBar
     lateinit var userDetailsParentScrollView: ConstraintLayout
+    lateinit var messageTextView: TextView
 
 
     lateinit var userImageView: ImageView
@@ -38,7 +40,7 @@ class UserDetailsActivity : AppCompatActivity()
     lateinit var companyTextView: TextView
     lateinit var bankTextView: TextView
 
-
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,7 @@ class UserDetailsActivity : AppCompatActivity()
     {
         progressBar = findViewById(R.id.progressBar)
         userDetailsParentScrollView = findViewById(R.id.userdetails)
+        messageTextView = findViewById(R.id.message)
         userNameTextView = findViewById(R.id.name)
         eyeColorTextView = findViewById(R.id.eyecolor)
         hairTextView = findViewById(R.id.hair)
@@ -71,11 +74,19 @@ class UserDetailsActivity : AppCompatActivity()
         bankTextView = findViewById(R.id.bank)
         addressTextView = findViewById(R.id.address)
         userImageView = findViewById(R.id.userimage)
+
+        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+
+            retrieveUserDetailsById(intent.extras!!.getInt("UserId", 1))
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun retrieveUserDetailsById(userId: Int)
     {
         progressBar.visibility = View.VISIBLE
+        messageTextView.visibility = View.GONE
         userDetailsParentScrollView.visibility = View.GONE
         mainActivityViewModel.retrieveUserDetailsById(userId, object : OnResponseObtained
         {
@@ -83,10 +94,12 @@ class UserDetailsActivity : AppCompatActivity()
             override fun onResponse(isSuccess: Boolean, responseData: Any?)
             {
                 progressBar.visibility = View.GONE
-                userDetailsParentScrollView.visibility = View.VISIBLE
+
                 Log.d("asdasdsad", "onResponse: $responseData")
                 if (isSuccess)
                 {
+                    userDetailsParentScrollView.visibility = View.VISIBLE
+                    messageTextView.visibility = View.GONE
                     val userDetails = responseData as User
 
                     val name =
@@ -198,6 +211,13 @@ class UserDetailsActivity : AppCompatActivity()
                     Glide.with(this@UserDetailsActivity).load(userDetails.image).placeholder(defaultIcon).into(userImageView)
                     Glide.with(this@UserDetailsActivity).load(genderIconImage).into(genderImageView)
 
+                }
+                else
+                {
+                    userDetailsParentScrollView.visibility = View.GONE
+                    messageTextView.visibility = View.VISIBLE
+
+                    messageTextView.setText((responseData as String))
                 }
             }
 

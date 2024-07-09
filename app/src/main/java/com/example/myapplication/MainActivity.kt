@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.myapplication.apiManager.model.User
 import com.example.myapplication.apiManager.model.UserResponseData
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity()
 {
     lateinit var messageTextView: TextView
     lateinit var userRecyclerView: RecyclerView
-
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
     var limitValue = 10
     var skipValue = 0
     private lateinit var mainActivityViewModel: MainActivityViewModel
@@ -127,7 +128,18 @@ class MainActivity : AppCompatActivity()
         userRecyclerView = findViewById(R.id.recyclerview)
 
         Log.d("asdsadsad", "onDataBind: $isLoading")
+        swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
 
+            limitValue = 10
+            skipValue = 0
+            userDetailsList.clear()
+            userDetailsListAdapter?.notifyDataSetChanged()
+            messageTextView.visibility = View.VISIBLE
+            messageTextView.text = getString(R.string.retrieving_data)
+            retrieveUserData(true)
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initAdapter()

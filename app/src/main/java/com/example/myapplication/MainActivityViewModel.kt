@@ -18,8 +18,7 @@ class MainActivityViewModel : ViewModel()
         {
             override fun onResponse(p0: Call<UserResponseData>, p1: Response<UserResponseData>)
             {
-                if (skipValue > 10) onResponseObtained.onResponse(false, "no user data")
-                else
+
                 if (p1.isSuccessful)
                 {
                     p1.body()?.let { userResponseData ->
