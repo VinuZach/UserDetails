@@ -54,7 +54,7 @@ class UserDetailsAdapter(private var userDetailsList: List<User?>?, private var 
 
     override fun getItemViewType(position: Int): Int
     {
-        return if (userDetailsList!![position] == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (userDetailsList!![position]==DUMMY_USER) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

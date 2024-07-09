@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.apiManager.model.User
 import com.example.myapplication.apiManager.model.UserResponseData
 
+val DUMMY_USER = User(id = 0, maidenName = "")
 
 class MainActivity : AppCompatActivity()
 {
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity()
     var userDetailsList: MutableList<User?> = mutableListOf()
 
     var userDetailsListAdapter: UserDetailsAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -46,33 +48,32 @@ class MainActivity : AppCompatActivity()
 
     private fun retrieveUserData(isFirstTime: Boolean)
     {
-//        if (!isFirstTime)
-//        {
-//            Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
-//            if (!userDetailsList.contains(null))
-//            {
-//                try
-//                {
-//                    //userDetailsList.add(null)
-////                    userRecyclerView.recycledViewPool.clear()
-////                    Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
-////                    userDetailsListAdapter?.notifyDataSetChanged()
-//                } catch (e: Exception)
-//                {
-//                    e.printStackTrace()
-//                }
-//
-//
-//
-//            }
-//        }
+        if (!isFirstTime)
+        {
+            Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(DUMMY_USER)}")
+            if (!userDetailsList.contains(DUMMY_USER))
+            {
+                try
+                {
+                    userDetailsList.add(DUMMY_USER)
+                    userRecyclerView.recycledViewPool.clear()
+                    Log.e("asdsadsd", "onScrolled:contains  ${userDetailsList.contains(null)}")
+                    userDetailsListAdapter?.notifyDataSetChanged()
+                } catch (e: Exception)
+                {
+                    e.printStackTrace()
+                }
+
+
+            }
+        }
         Log.e("asdsadsd", "retreiveUserData: ")
         mainActivityViewModel.retrieveUserList(limitValue, skipValue, onResponseObtained = object : OnResponseObtained
         {
             override fun onResponse(isSuccess: Boolean, responseData: Any?)
             {
                 messageTextView.visibility = View.GONE
-                if (userDetailsList.contains(null)) userDetailsList.remove(null)
+
                 isLoading = false
                 if (isSuccess)
                 {
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity()
                     userResponseData.users?.let {
                         try
                         {
-
+                            if (userDetailsList.contains(DUMMY_USER)) userDetailsList.remove(DUMMY_USER)
                             userDetailsList.addAll(it)
 
                             Log.e("asdsadsd", "${userDetailsList.size}: ")
@@ -100,9 +101,17 @@ class MainActivity : AppCompatActivity()
                 }
                 else
                 {
-
-                    messageTextView.visibility = View.VISIBLE
-                    messageTextView.text = (responseData as String)
+                    if (userDetailsList.size == 0)
+                    {
+                        messageTextView.visibility = View.VISIBLE
+                        messageTextView.text = (responseData as String)
+                    }
+                    else
+                    {
+                        if (userDetailsList.contains(DUMMY_USER)) userDetailsList.remove(DUMMY_USER)
+                        userRecyclerView.recycledViewPool.clear()
+                        userDetailsListAdapter?.notifyDataSetChanged()
+                    }
                 }
             }
 
