@@ -1,19 +1,13 @@
 package com.example.myapplication
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.customlibrary.A1RecyclerAdapter
 import com.example.myapplication.apiManager.model.User
 import com.example.myapplication.apiManager.model.UserResponseData
 
@@ -25,10 +19,12 @@ class MainActivity : AppCompatActivity()
 
     var limitValue = 10
     var skipValue = 0
-    lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var mainActivityViewModel: MainActivityViewModel
 
-    lateinit var userDetailsAdapter: A1RecyclerAdapter<User>
-    var userDetailsList = mutableListOf<User>()
+
+    var userDetailsList: MutableList<User?> = mutableListOf()
+
+    var userDetailsListAdapter: UserDetailsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -37,28 +33,51 @@ class MainActivity : AppCompatActivity()
         init()
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
-        messageTextView.visibility = View.GONE
-        retreiveUserData(true)
+        messageTextView.visibility = View.VISIBLE
+        messageTextView.text= getString(R.string.retrieving_data)
 
+
+        retrieveUserData(true)
+
+        initAdapter()
+        initScrollListener()
 
     }
 
-    private fun retreiveUserData(isFirstTime: Boolean)
+    private fun retrieveUserData(isFirstTime: Boolean)
     {
+        if (!isFirstTime)
+        {
+            userDetailsList.add(null)
+            userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
 
+
+            val scrollPosition = userDetailsList.size - 1
+            userDetailsListAdapter?.notifyItemRemoved(scrollPosition)
+
+
+        }
+        Log.e("asdsadsd", "retreiveUserData: ")
         mainActivityViewModel.retrieveUserList(limitValue, skipValue, onResponseObtained = object : OnResponseObtained
         {
             override fun onResponse(isSuccess: Boolean, responseData: Any?)
             {
-
-                isLoading = false;
+                messageTextView.visibility = View.GONE
+                if (!isFirstTime) userDetailsList.removeAt(userDetailsList.size - 1)
+                isLoading = false
                 if (isSuccess)
                 {
+
                     val userResponseData = responseData as UserResponseData
                     skipValue += limitValue
                     userResponseData.users?.let {
                         userDetailsList.addAll(it)
-                        displayUserData(userDetailsList, isFirstTime)
+
+                        Log.e("asdsadsd", "${userDetailsList.size}: ")
+                        userDetailsListAdapter?.notifyItemInserted(userDetailsList.size - 1)
+                        if (skipValue == (limitValue * 2)) userRecyclerView.scrollToPosition(skipValue)
+                        isLoading = false
+
                     }
 
                 }
@@ -74,69 +93,6 @@ class MainActivity : AppCompatActivity()
 
     var isLoading = false
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun displayUserData(userDetailsList: List<User>, isFirstTime: Boolean)
-    {
-        if (!isFirstTime)
-        {
-            userDetailsAdapter.notifyDataSetChanged()
-            return
-        }
-        userDetailsAdapter = object : A1RecyclerAdapter<User>(this@MainActivity, userDetailsList)
-        {
-            override val layoutResourceId: Int
-                get() = R.layout.item_user_short_details
-
-
-            override fun onDataBind(model: User, position: Int, holder: RecyclerView.ViewHolder?)
-            {
-                holder?.let {
-                    val userNameTextView = holder.itemView.findViewById<TextView>(R.id.name)
-                    val emailTextView = holder.itemView.findViewById<TextView>(R.id.email)
-                    val userImageView = holder.itemView.findViewById<ImageView>(R.id.imageView)
-                    val name =
-                        model.firstName + " " + (if (model.maidenName.isNotEmpty()) (model.maidenName.first() + " ") else "") + model.lastName
-                    userNameTextView.text = name
-                    emailTextView.text = model.email
-                    val defaultIcon = if (model.gender == "female") R.drawable.female_default_icon else R.drawable.male_default_icon
-                    Glide.with(this@MainActivity).load(model.image).placeholder(defaultIcon).into(userImageView);
-                    holder.itemView.setOnClickListener {
-                        val userDetailsIntent = Intent(this@MainActivity, UserDetailsActivity::class.java)
-                        userDetailsIntent.putExtra("UserId", model.id)
-                        startActivity(userDetailsIntent)
-                    }
-                }
-
-            }
-
-        }
-
-
-        userRecyclerView.apply {
-            setAdapter(userDetailsAdapter)
-        }
-
-        userRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener()
-        {
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int)
-            {
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-
-                if (!isLoading)
-                {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == userDetailsList.size - 1)
-                    {
-
-
-                        retreiveUserData(false)
-                        isLoading = true;
-                    }
-                }
-            }
-        })
-    }
-
 
     fun init()
     {
@@ -146,5 +102,43 @@ class MainActivity : AppCompatActivity()
         Log.d("asdsadsad", "onDataBind: $isLoading")
 
     }
+
+    private fun initAdapter()
+    {
+        userDetailsListAdapter = UserDetailsAdapter(userDetailsList, this)
+        userRecyclerView.setAdapter(userDetailsListAdapter)
+    }
+
+
+    private fun initScrollListener()
+    {
+        userRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener()
+        {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int)
+            {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int)
+            {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                Log.d("asdsadsd", "onScrolled: $isLoading   ...${linearLayoutManager?.findLastCompletelyVisibleItemPosition()}")
+                Log.d("asdsadsd", "onScrolled: ${userDetailsList.size}")
+                if (!isLoading)
+                {
+
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == userDetailsList.size - 1)
+                    {
+
+                        retrieveUserData(false)
+                        isLoading = true
+                    }
+                }
+            }
+        })
+    }
+
 }
 

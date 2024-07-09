@@ -43,10 +43,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.glide)
-    implementation(files("D:\\androidProject\\machinetest_xpayback\\app\\libs\\A1RecyclerViewAdapater-1.0.0.aar"))
-
-
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
