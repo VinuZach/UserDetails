@@ -12,7 +12,7 @@
         android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="user profile"
+        android:contentDescription="@string/user_profile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

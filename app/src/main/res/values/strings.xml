@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="retrieving_data">Retrieving Data</string>
+    <string name="user_profile">user profile</string>
 </resources>
